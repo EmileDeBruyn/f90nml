@@ -341,7 +341,7 @@ class Parser(object):
             v_name = None
 
             # TODO: Edit `Namelist` to support case-insensitive `get` calls
-            grp_patch = nml_patch.get(g_name.lower(), Namelist())
+            grp_patch = nml_patch.get(g_name, Namelist())
 
             # Populate the namelist group
             while g_name:
@@ -424,8 +424,8 @@ class Parser(object):
             v_idx = FIndex(v_idx_bounds, self.global_start_index)
 
             # Update starting index against namelist record
-            if v_name.lower() in parent.start_index:
-                p_idx = parent.start_index[v_name.lower()]
+            if v_name in parent.start_index:
+                p_idx = parent.start_index[v_name]
 
                 for idx, pv in enumerate(zip(p_idx, v_idx.first)):
                     if all(i is None for i in pv):
@@ -449,7 +449,7 @@ class Parser(object):
                     v_idx.first = [self.default_start_index
                                    for _ in v_idx.first]
 
-            parent.start_index[v_name.lower()] = v_idx.first
+            parent.start_index[v_name] = v_idx.first
 
             self._update_tokens()
 
@@ -471,7 +471,7 @@ class Parser(object):
             #   non-indexed variable using the global start index
 
             if v_name in parent.start_index:
-                p_start = parent.start_index[v_name.lower()]
+                p_start = parent.start_index[v_name]
                 v_start = [self.default_start_index for _ in p_start]
 
                 # Resize vector based on new starting index
@@ -480,7 +480,7 @@ class Parser(object):
                         pad = [None for _ in range(i_p - i_v)]
                         parent[v_name] = pad + parent[v_name]
 
-                parent.start_index[v_name.lower()] = v_start
+                parent.start_index[v_name] = v_start
 
         if self.token == '%':
 
@@ -489,10 +489,10 @@ class Parser(object):
             # Check for value in patch
             v_patch_nml = None
             if v_name in patch_nml:
-                v_patch_nml = patch_nml.pop(v_name.lower())
+                v_patch_nml = patch_nml.pop(v_name)
 
             if parent:
-                vpar = parent.get(v_name.lower())
+                vpar = parent.get(v_name)
                 if vpar and isinstance(vpar, list):
                     # If new element is not a list, then assume it's the first
                     # element of the list.
@@ -535,7 +535,7 @@ class Parser(object):
             # TODO: Edit `Namelist` to support case-insensitive `pop` calls
             #       (Currently only a problem in PyPy2)
             if v_name in patch_nml:
-                patch_values = patch_nml.pop(v_name.lower())
+                patch_values = patch_nml.pop(v_name)
 
                 if not isinstance(patch_values, list):
                     patch_values = [patch_values]

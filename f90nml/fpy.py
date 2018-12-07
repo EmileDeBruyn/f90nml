@@ -14,7 +14,7 @@ def pyfloat(v_str):
     # NOTE: There is no loss of information from SP to DP floats
 
     return float(re.sub('(?<=[^eEdD])(?=[+-])', 'e',
-                        v_str.lower().replace('d', 'e')))
+                        v_str.replace('d', 'e')))
 
 
 def pycomplex(v_str):
@@ -37,13 +37,13 @@ def pybool(v_str, strict_logical=True):
     assert isinstance(strict_logical, bool)
 
     if strict_logical:
-        v_bool = v_str.lower()
+        v_bool = v_str
     else:
         try:
             if v_str.startswith('.'):
-                v_bool = v_str[1].lower()
+                v_bool = v_str[1]
             else:
-                v_bool = v_str[0].lower()
+                v_bool = v_str[0]
         except IndexError:
             raise ValueError('{0} is not a valid logical constant.'
                              ''.format(v_str))

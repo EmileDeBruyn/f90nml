@@ -90,19 +90,19 @@ class Namelist(OrderedDict):
 
     def __contains__(self, key):
         """Case-insensitive interface to OrderedDict."""
-        return super(Namelist, self).__contains__(key.lower())
+        return super(Namelist, self).__contains__(key)
 
     def __delitem__(self, key):
         """Case-insensitive interface to OrderedDict."""
-        return super(Namelist, self).__delitem__(key.lower())
+        return super(Namelist, self).__delitem__(key)
 
     def __getitem__(self, key):
         """Case-insensitive interface to OrderedDict."""
         if isinstance(key, basestring):
-            return super(Namelist, self).__getitem__(key.lower())
+            return super(Namelist, self).__getitem__(key)
         else:
             keyiter = iter(key)
-            grp, var = next(keyiter).lower(), next(keyiter).lower()
+            grp, var = next(keyiter), next(keyiter)
             return super(Namelist, self).__getitem__(grp).__getitem__(var)
 
     def __setitem__(self, key, value):
@@ -125,7 +125,7 @@ class Namelist(OrderedDict):
                 else:
                     value[i] = None
 
-        super(Namelist, self).__setitem__(key.lower(), value)
+        super(Namelist, self).__setitem__(key, value)
 
     def __str__(self):
         """Print the Fortran representation of the namelist.
@@ -298,8 +298,8 @@ class Namelist(OrderedDict):
     def true_repr(self, value):
         """Validate and set the logical true representation."""
         if isinstance(value, str):
-            if not (value.lower().startswith('t') or
-                    value.lower().startswith('.t')):
+            if not (value.startswith('t') or
+                    value.startswith('.t')):
                 raise ValueError("Logical true representation must start with "
                                  "'T' or '.T'.")
             else:
@@ -319,8 +319,8 @@ class Namelist(OrderedDict):
     def false_repr(self, value):
         """Validate and set the logical false representation."""
         if isinstance(value, str):
-            if not (value.lower().startswith('f') or
-                    value.lower().startswith('.f')):
+            if not (value.startswith('f') or
+                    value.startswith('.f')):
                 raise ValueError("Logical false representation must start "
                                  "with 'F' or '.F'.")
             else:
